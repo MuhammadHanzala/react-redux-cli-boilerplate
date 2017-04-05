@@ -1,32 +1,34 @@
 import React from 'react';
+import {Provider} from 'react-redux';
 import ReactDOM from 'react-dom';
-// import App from './containers/smartlogin';
-// import store from './store/store';
-import { createStore, combineReducers } from "redux";
-import { Provider } from "react-redux"
-import { connect } from 'react-redux';
-import App from './containers/App';
-import allReducer from './reducers/index'
+import firebase from 'firebase';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import {App} from './components';
+import './index.css';
+import configureStore from './store/configureStore';
 
-export const setName = (name)=>{
-    return{
-      type: "SETNAME",
-      payload: name
-    }
-  }
 
-export const setAge = () => {
-  return {
-    type: 'SETAGE'
-  }
-}
+const store = configureStore();
 
-const store = createStore(allReducer)
+injectTapEventPlugin();
 
+// Initialize Firebase
+var config = {
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  storageBucket: "",
+  messagingSenderId: ""
+};
+
+firebase.initializeApp(config);
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <MuiThemeProvider>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </MuiThemeProvider>,
   document.getElementById('root')
 );
